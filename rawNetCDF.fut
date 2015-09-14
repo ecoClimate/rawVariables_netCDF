@@ -15,7 +15,7 @@
 ## netCDFfile => name of file (with format .nc and in quotes, for example: "tmin21.nc") with monthly simulations you want compute climatic averages. The netCDFfile is the raw netCDF output downloaded from CMIP5/PMIP3;
 
 
-## nameVarCDF => the acronym (also in quotes --> "tasmin") of the variable you want extract from fileCDF (e.g., tas: mean temperature - tasmin: minimum temp. - tasmax: maximum temp. - pr: precipitation flux);
+## nameVarCDF => should be "tas", "tasmax", "tasmin" or "pr"; the acronym (in quotes --> "tasmin") of the variable you want extract from fileCDF;
 
 
 ## var => the nature of variable; should this variable (nameVarCDF) be "temperature" (tas, tasmin, tasmax) or "precipitation" (pr), written in quotes. This is mandatory to give the correct variable unit (degree Celsius or kg.m-2.mes-1);
@@ -41,7 +41,7 @@
 
 
 
-rawNetCDF.fut <- function (netCDFfile = "tmin21.nc", nameVarCDF = "tasmin", var = "temperature or precipitation", dim.initial = 889, dim.final = 1140, output.file = "tmin21.txt")
+rawNetCDF.fut <- function (netCDFfile = " ", nameVarCDF = " ", var = " ", dim.initial = 889, dim.final = 1140, output.file = " ")
 {
 
   library (ncdf)
@@ -64,9 +64,9 @@ rawNetCDF.fut <- function (netCDFfile = "tmin21.nc", nameVarCDF = "tasmin", var 
   	meanVarCLIM_month <- matrix (NA, nrow(varCLIM), ncol(varCLIM)) # will save the monthly climatic averages
   	
   	for (i in 1:nrow(varCLIM)) { # fill the matrix 'meanVarCLIM_month'
-    		for (j in 1:ncol(varCLIM)){
+    	   for (j in 1:ncol(varCLIM)){
     		meanVarCLIM_month[i,j] <- mean(varCLIM_month[i,j, ], na.rm = T)
-  	} #ends for 'j'
+  	   } #ends for 'j'
     	} #ends for 'i'
 
   monthly_output[,z+2] <- as.vector(meanVarCLIM_month) 
@@ -102,8 +102,8 @@ rawNetCDF.fut <- function (netCDFfile = "tmin21.nc", nameVarCDF = "tasmin", var 
 
 
 
-# to start, run function 'rawNetCDF.fut' using a command like follows below. Remember first to paste function to the R-console and to set working directory where file 'netCDFfile' is saved into.
+# to run function 'rawNetCDF.fut', use a command like follows below. Remember first to paste function to the R-console and to set working directory where file 'netCDFfile' is saved into.
 
 #(examples of a command to run function 'rawNetCDF.fut')
-#rawNetCDF.fut(netCDFfile = "pr_Amon_CCSM4_rcp26_r1i1p1_200601-210012.nc"; nameVarCDF = "pr"; var = "precipitation"; dim.initial = 889; dim.final = 1140; output.file = "pr_CCSM_rcp26.txt")
- 
+#rawNetCDF.fut(netCDFfile = "pr_Amon_CCSM4_rcp26_r1i1p1_200601-210012.nc", nameVarCDF = "pr", var = "precipitation", dim.initial = 889, dim.final = 1140, output.file = "pr_CCSM_rcp26.txt")
+
