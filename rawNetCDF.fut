@@ -105,5 +105,5 @@ rawNetCDF.fut <- function (netCDFfile = " ", nameVarCDF = " ", var = " ", dim.in
 # to run function 'rawNetCDF.fut', use a command like follows below. Remember first to paste function to the R-console and to set working directory where file 'netCDFfile' is saved into.
 
 #(examples of a command to run function 'rawNetCDF.fut')
-#rawNetCDF.fut(netCDFfile = "pr_Amon_CCSM4_rcp26_r1i1p1_200601-210012.nc", nameVarCDF = "pr", var = "precipitation", dim.initial = 889, dim.final = 1140, output.file = "pr_CCSM_rcp26.txt")
+#   rawNetCDF.fut(netCDFfile = "pr_Amon_CCSM4_rcp26_r1i1p1_200601-210012.nc", nameVarCDF = "pr", var = "precipitation", dim.initial = 889, dim.final = 1140, output.file = "pr_CCSM_rcp26.txt")
 
