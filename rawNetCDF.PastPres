@@ -1,0 +1,97 @@
+##########################################################################################
+#########################################################
+#############################
+
+# Function "rawNetCDF.PastPres" computes climatic averages from netCDF files (raw outputs from GCMs) for all time series GCMs were run in the past or present experiments. These climatic averages should be interpolated using functions "kriging.baseline" and/or "kriging.anomaly".
+
+#############################
+#########################################################
+##########################################################################################
+
+##### Follows a brief description, with examples, for each argument from function "rawNetCDF.PastPres"
+
+
+## netCDFfile => name of file (with format .nc and in quotes, for example: "tmin21.nc") with monthly simulations you want compute climatic averages. The netCDFfile is the raw netCDF output downloaded from CMIP5/PMIP3;
+
+
+## nameVarCDF => should be "tas", "tasmax", "tasmin" or "pr"; the acronym (in quotes --> "tasmin") of the variable you want extract from fileCDF;
+
+
+## var => the nature of variable; should this variable (nameVarCDF) be "temperature" (tas, tasmin, tasmax) or "precipitation" (pr), written in quotes. This is mandatory to give the correct variable unit (degree Celsius or kg.m-2.mes-1);
+
+
+## output.file => indicate the name for the file to be saved in your working directory containing averaged climate for specified period (with file extention .txt and in quotes, for example: "tmin21.txt")
+
+
+
+
+
+rawNetCDF.PastPres <- function (netCDFfile = " ", nameVarCDF = " ", var = " ", output.file = " ")
+{
+
+
+
+  library (ncdf)
+
+  objectCDF <- open.ncdf (netCDFfile) #open netCDF
+
+  varCLIM <- get.var.ncdf (nc = objectCDF, varid = nameVarCDF) #extract variable 
+
+  monthly_output <- matrix(NA, nrow(varCLIM)*ncol(varCLIM), 14, dimnames = list(c(), c('long', 'lat', 'jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez')))
+
+
+   for(z in c(1:12)){
+  	index <- seq(z,dim(varCLIM)[3], 12)
+  	varCLIM_month <- varCLIM[,,index]
+  	
+  	meanVarCLIM_month <- matrix (NA, nrow(varCLIM), ncol(varCLIM)) # will save the monthly climatic averages
+  	
+  	for (i in 1:nrow(varCLIM)) { # fill the matrix 'meanVarCLIM_month'
+    	for (j in 1:ncol(varCLIM)){
+    		meanVarCLIM_month[i,j] <- mean(varCLIM_month[i,j, ], na.rm = T)
+  		} #ends for 'j'
+    } #ends for 'i'
+
+  monthly_output[,z+2] <- as.vector(meanVarCLIM_month) 
+      	
+  }#fecha for 'z'
+  
+
+  if (var == "precipitation") {monthly_output <- monthly_output*2592000} # changing precipitation unit from kg.m-2.s-1 to kg.m-2.month-1 (a standard month with 30 days have 2592000 sec = 60sec*60min*24hr*30days)
+  
+  if (var == "temperature") {monthly_output <- monthly_output-273.15} # changing temperature unit from Kelvin (SI) to Celsius
+
+
+  long1 <- get.var.ncdf (nc = objectCDF, varid = "lon") # extract values of 'longitude' from netCDF file
+  lat1 <- get.var.ncdf (nc = objectCDF, varid = "lat") # extract values of 'latitude' from netCDF file
+
+
+  long2 <- as.vector (long1)
+  long3 <- ifelse(long2 > 180, long2-360, long2) # correcting longitude to vary from -180 to 180
+  longitude <- rep(long3, length(lat1))
+
+  lat2 <- as.vector(lat1)
+  latitude <- sort(rep(lat2, length(long1)), decreasing=F)
+  
+  monthly_output[,1] <- longitude
+  monthly_output[,2] <- latitude
+
+  write.table(monthly_output, output.file, row.names=F)
+
+  }#ends 'function rawNetCDF.PastPres'
+
+ ################  
+
+
+
+
+
+# to run function 'rawNetCDF.PastPres', use a command like follows below. Remember first to paste function to the R-console and to set working directory where file 'netCDFfile' is saved into.
+
+#(examples of a command to run function 'rawNetCDF.fut')
+#rawNetCDF.PastPres(netCDFfile = "tas_Amon_CCSM4_piControl_r1i1p1_080001-130012.nc", nameVarCDF = "tas", var = "temperature", output.file = "tas_CCSM_piControl.txt")
+
+
+
+
+ 
