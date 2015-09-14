@@ -88,8 +88,8 @@ rawNetCDF.PastPres <- function (netCDFfile = " ", nameVarCDF = " ", var = " ", o
 
 # to run function 'rawNetCDF.PastPres', use a command like follows below. Remember first to paste function to the R-console and to set working directory where file 'netCDFfile' is saved into.
 
-#(examples of a command to run function 'rawNetCDF.fut')
-#rawNetCDF.PastPres(netCDFfile = "tas_Amon_CCSM4_piControl_r1i1p1_080001-130012.nc", nameVarCDF = "tas", var = "temperature", output.file = "tas_CCSM_piControl.txt")
+#(examples of a command to run function 'rawNetCDF.PastPres')
+#   rawNetCDF.PastPres(netCDFfile = "tas_Amon_CCSM4_piControl_r1i1p1_080001-130012.nc", nameVarCDF = "tas", var = "temperature", output.file = "tas_CCSM_piControl.txt")
 
 
 
