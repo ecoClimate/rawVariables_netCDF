@@ -66,8 +66,8 @@ rawNetCDF.fut <- function (netCDFfile = "tmin21.nc", nameVarCDF = "tasmin", var 
   	for (i in 1:nrow(varCLIM)) { # fill the matrix 'meanVarCLIM_month'
     		for (j in 1:ncol(varCLIM)){
     		meanVarCLIM_month[i,j] <- mean(varCLIM_month[i,j, ], na.rm = T)
-  	} #fecha for 'j'
-    	} #fecha for 'i'
+  	} #ends for 'j'
+    	} #ends for 'i'
 
   monthly_output[,z+2] <- as.vector(meanVarCLIM_month) 
       	
